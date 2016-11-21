@@ -26,7 +26,8 @@ public class PlayerController : MonoBehaviour {
 
 	private bool walking;
 
-	public GameObject marker;
+	public GameObject markerObject;
+	GameObject marker;
 
 	public GameObject swordCursor;
 	public GameObject gvrCursor;
@@ -38,7 +39,7 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Instantiate (marker);
+		marker = (GameObject)Instantiate (markerObject);
 		player = GameObject.Find("Player(Clone)");
 		animator = player.GetComponent<Animator> ();
 		navMeshAgent = player.GetComponent<NavMeshAgent> ();
@@ -67,7 +68,6 @@ public class PlayerController : MonoBehaviour {
 		if (Physics.Raycast(ray, out hit, 50))
 		{
 			marker.transform.position = new Vector3 (hit.point.x, 0, hit.point.z);
-			Debug.Log (marker.transform.position);
 		}
 		if (Physics.Raycast (ray, out hit, 50)) {
 			if (hit.collider.gameObject.tag == "monster") {
@@ -153,6 +153,7 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 		}*/
+		Debug.Log (marker.transform.position);
 	
 	}
 
