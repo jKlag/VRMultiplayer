@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
 	GameObject player;
-
 
 	private NavMeshAgent navMeshAgent;
 
@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour {
 	private float nextShout;
 
 	Animator animator;
+	NetworkAnimator netAnim;
 
 	private bool walking;
 
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour {
 		marker = (GameObject)Instantiate (markerObject);
 		player = GameObject.Find("Player(Clone)");
 		animator = player.GetComponent<Animator> ();
+		netAnim = player.GetComponent<NetworkAnimator> ();
 		navMeshAgent = player.GetComponent<NavMeshAgent> ();
 		transform.position = player.transform.position + new Vector3(0,1.2f,0) + .3f*player.transform.forward;
 		float yRot = transform.rotation.eulerAngles.y;
@@ -52,11 +54,6 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		animator.SetFloat("Forward", Vector3.Magnitude(navMeshAgent.velocity), 0.1f, Time.deltaTime);
-		if (hasKey) {
-			keyIcon.transform.localScale = new Vector3 (.2f, .2f, .2f);
-		} else {
-			keyIcon.transform.localScale = new Vector3 (0, 0, 0);
-		}
 		float yRot = transform.rotation.eulerAngles.y;
 		player.transform.eulerAngles = new Vector3 (0, yRot, 0);
 		transform.position = player.transform.position + new Vector3(0,1.2f,0) + .3f*player.transform.forward;
@@ -71,23 +68,22 @@ public class PlayerController : MonoBehaviour {
 		}
 		if (Physics.Raycast (ray, out hit, 50)) {
 			if (hit.collider.gameObject.tag == "monster") {
-				//marker.transform.localScale = new Vector3 (0, 0, 0);
 				swordCursor.transform.localScale = new Vector3 (0.05f, 0.05f, 0.05f);
 				gvrCursor.transform.localScale = new Vector3 (0, 0, 0);
 			} else {
 				gvrCursor.transform.localScale = new Vector3 (1, 1, 1);
 				swordCursor.transform.localScale = new Vector3 (0, 0, 0);
-				//marker.transform.localScale = new Vector3 (1, 1, 1);
 			}
 		}
 
 		if (Input.GetButtonDown ("Fire1")) 
 		{
+			netAnim.SetTrigger ("Attack");
 			if (Physics.Raycast(ray, out hit,50))
 			{
 				if (hit.collider.gameObject.tag == "monster" && Time.time > nextAttack) {
 					//play animation
-					animator.SetTrigger ("Attack3Trigger");
+
 					nextAttack = Time.time + attackRate;
 					if (Vector3.Distance (transform.position, hit.point) < 1) {
 						Destroy (hit.collider.gameObject);
@@ -153,18 +149,19 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 		}*/
-		Debug.Log (marker.transform.position);
-	
 	}
+		
 
 	void OnTriggerEnter(Collider col){
 		if (col.gameObject.tag == "key") {
 			hasKey = true;
 			Destroy (col.gameObject);
+			keyIcon.transform.localScale = new Vector3 (.2f, .2f, .2f);
 		}
 		if (col.gameObject.tag == "fakekey") {
 			if (mClass != PClass.magnifier) {
 				hasKey = true;
+				keyIcon.transform.localScale = new Vector3 (.2f, .2f, .2f);
 			} 
 			Destroy (col.gameObject);
 		}
