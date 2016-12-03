@@ -6,30 +6,49 @@ public class Controller : NetworkBehaviour {
 
 	public GameObject camera;
 	public GameObject gvrPrefab;
-//	public GameObject reticle;
-//	public GameObject eventSystem;
 
-	// Use this for initialization
-	void Start () {
-	
+	//chooses the class of the player incrementally. Allows for players to drop out and be readded.
+	int chooseClassNum(){
+		GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
+		bool unique = false;
+		int num = 1;
+		while (!unique) {
+			int newNum = num;
+			foreach(GameObject p in players){
+				if (num == p.GetComponent<Class> ().getClassNum ()) {
+					num++;
+				}
+			}
+			if (newNum == num) {
+				unique = true;
+			}
+		}
+		print (num);
+		return num;
 	}
 		
 
 	public override void OnStartLocalPlayer()
 	{
+
+		
+
+		gameObject.GetComponent<Class>().setClass(chooseClassNum());
+
 		print ("called");
 		foreach(SkinnedMeshRenderer s in GetComponentsInChildren<SkinnedMeshRenderer>()){
 				s.material.color = Color.blue;
 		}
-		Instantiate (camera);
+		GameObject cam = Instantiate (camera);
 		Instantiate (gvrPrefab);
-		/*GameObject cam = new GameObject();
-		cam.AddComponent<Camera>();
-		cam.tag = "MainCamera";
-		cam.name = "cam";
-		cam.transform.parent = gameObject.transform;
-		cam.transform.localPosition = new Vector3 (0, 2, -5);
-		cam.transform.localRotation = Quaternion.Euler (20, 0, 0);*/
+
+		cam.GetComponent<PlayerController> ().setPlayer (gameObject);
+
 	}
+
+	public bool getIsLocalPlayer(){
+		return isLocalPlayer;
+	}
+
 }
 
