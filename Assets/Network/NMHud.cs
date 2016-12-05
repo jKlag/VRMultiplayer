@@ -63,12 +63,12 @@ namespace UnityEngine.Networking
 		void OnGUI()
 		{
 			//either on android or vive
-			//if (UnityEngine.Application.platform == RuntimePlatform.Android) {
+			if (UnityEngine.Application.platform == RuntimePlatform.Android) {
 				showAndroid ();
-			//} else {
+			} else {
 				//showAndroid ();
 				showVive ();
-			//}
+			}
 				
 		}
 
