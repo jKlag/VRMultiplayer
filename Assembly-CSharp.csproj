@@ -45,9 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Class.cs" />
      <Compile Include="Assets\Controller.cs" />
-     <Compile Include="Assets\FollowPlayer.cs" />
      <Compile Include="Assets\GoogleVR\DemoScenes\ControllerDemo\ControllerDebugInfo.cs" />
      <Compile Include="Assets\GoogleVR\DemoScenes\ControllerDemo\ControllerDemoManager.cs" />
      <Compile Include="Assets\GoogleVR\DemoScenes\HeadsetDemo\Teleport.cs" />
@@ -93,15 +91,17 @@
      <Compile Include="Assets\GoogleVR\Scripts\UI\IGvrGazeResponder.cs" />
      <Compile Include="Assets\GoogleVR\Scripts\Utilities\GvrFPS.cs" />
      <Compile Include="Assets\GoogleVR\Scripts\Utilities\GvrIntent.cs" />
-     <Compile Include="Assets\KeyboardMove.cs" />
-     <Compile Include="Assets\NMHud.cs" />
      <Compile Include="Assets\NetManager.cs" />
-     <Compile Include="Assets\PlayerController.cs" />
-     <Compile Include="Assets\Spawner.cs" />
+     <Compile Include="Assets\Network\NMHud.cs" />
+     <Compile Include="Assets\Network\Spawner.cs" />
+     <Compile Include="Assets\Players\Class.cs" />
+     <Compile Include="Assets\Players\FollowPlayer.cs" />
+     <Compile Include="Assets\Players\PlayerController.cs" />
      <Compile Include="Assets\UserControlModded.cs" />
      <Compile Include="Assets\ViveController.cs" />
      <None Include="Assets\GoogleVR\Distortion\GvrDistortion.cginc" />
      <None Include="Assets\GoogleVR\Legacy\Resources\UnlitTexture.shader" />
+     <None Include="Assets\Items\Staff\FantasyStaffReadme.txt" />
      <None Include="Assets\Plugins\Android\AndroidManifest-Daydream.xml" />
      <None Include="Assets\GoogleVR\Resources\UI\GvrReticleShader.shader" />
      <None Include="Assets\Plugins\Android\AndroidManifest-Cardboard.xml" />
