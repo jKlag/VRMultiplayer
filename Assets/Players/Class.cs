@@ -4,9 +4,6 @@ using UnityEngine.Networking;
 
 public class Class : NetworkBehaviour {
 
-	public GameObject warriorItem;
-	public GameObject detectiveItem;
-	public GameObject destroyerItem;
 
 	private string playerClass;
 
@@ -15,16 +12,21 @@ public class Class : NetworkBehaviour {
 	Color destroyerColor = Color.red;
 	int classNumber;
 
-	[SyncVar]
-	public Color m_color;
+	private GameObject item;
+	public Color color;
 
-
+	public GameObject warriorItem;
+	public GameObject detectiveItem;
+	public GameObject destroyerItem;
+	//public GameObject emptyItem;
 
 	public string getClass(){
 		return playerClass;
 	}
 
 	public void setClass(int classNum){
+		if (!isLocalPlayer){return;}
+
 		print ("Called");
 		classNumber = classNum;
 		switch (classNumber) {
@@ -46,69 +48,61 @@ public class Class : NetworkBehaviour {
 
 	void setWarrior(){
 		playerClass = "warrior";
-		SetColor (warriorColor);
-		placeItem (warriorItem);
+		//SetColor (warriorColor);
 
 	}
 	void setDetective(){
 		playerClass = "detective";
-		SetColor (detectiveColor);
-		placeItem (detectiveItem);
-
-		//TODO:Dynamically attach warrior class
+		//SetColor (detectiveColor);
 	}
 	void setDestroyer(){
 		playerClass = "destroyer";
-		SetColor (destroyerColor);
-		placeItem (destroyerItem);
-		//TODO:Dynamically attach warrior class
-
+		//SetColor (destroyerColor);
 	}
 
 	void SetColor(Color c){
-		CmdSetMeshColors (c);
+		color = c;
 	}
 
-	void placeItem(GameObject theItem){
-		GameObject emptyItem = GameObject.FindGameObjectWithTag("playerItem");
-		GameObject item = Instantiate (theItem);
-		item.transform.position = emptyItem.transform.position;
-		item.transform.rotation = emptyItem.transform.rotation;
-		item.transform.Rotate (new Vector3 (0, 90, 0));
-		item.transform.parent = emptyItem.transform.parent;
-		CmdSpawnItem (item);
-	}
+
+
+//
+//	[Command]
+//	public void CmdCreateItem(string spawnitem, string g)//since i want client to tell server object position i need these parameters
+//	{
+//		GameObject item = (GameObject)GameObject.Instantiate (spawnitem);
+//		item.transform.parent = g.transform;
+//		NetworkServer.Spawn(item);
+//		RpcSyncBlockOnce (item.transform.localPosition, item.transform.localRotation, item, item.transform.parent.gameObject);
+//	}
+//
+//	[ClientRpc]
+//	public void RpcSyncBlockOnce(Vector3 localPos, Quaternion localRot, GameObject block, GameObject parent)
+//	{
+//		block.transform.parent = parent.transform;
+//		block.transform.localPosition = localPos;
+//		block.transform.localRotation = localRot;
+//	}
+
+//	//Server Commands
+//	[Command]
+//	public void CmdSpawnWarrior()
+//	{
+//		item = Instantiate (m_warriorItem);
+//		item.transform.position = m_emptyItem.transform.position;
+//		item.transform.rotation = m_emptyItem.transform.rotation;
+//		item.transform.Rotate (new Vector3 (0, 90, 0));
+//		item.transform.parent = m_emptyItem.transform.parent;
+//		NetworkServer.Spawn (item);
+//	}
+//
 
 	[Command]
-	public void CmdSpawnItem(GameObject item){
-		NetworkServer.Spawn (item);
-
-	}
-
-
-	//Server Commands
-	[Command]
-	public void CmdSetMeshColors(Color c)
-	{
-		m_color = c;
-		foreach (SkinnedMeshRenderer mesh in gameObject.GetComponentsInChildren<SkinnedMeshRenderer>())
-		{
-			mesh.material.color = m_color;
-		}
-		RpcSetColor (c);
-
-	}
-
-	[ClientRpc]
-	void RpcSetColor( Color c )
-	{
-		m_color = c;
-		foreach (SkinnedMeshRenderer mesh in gameObject.GetComponentsInChildren<SkinnedMeshRenderer>())
-		{
-			mesh.material.color = m_color;
+	public void CmdSetColor(Color color){
+		foreach (SkinnedMeshRenderer s in gameObject.GetComponentsInChildren<SkinnedMeshRenderer>()) {
+			s.material.color = color;
 		}
 	}
-
 
 
 	public void attack(RaycastHit hit){

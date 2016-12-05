@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour {
 
 
 			if (Physics.Raycast (ray, out hit, 50)) {
-				if (hit.collider.gameObject.name == "Plane") {
+				if (hit.collider.gameObject.tag != "hittable") {
 					navMeshAgent.SetDestination (hit.point);
 					navMeshAgent.Resume ();
 				} else {

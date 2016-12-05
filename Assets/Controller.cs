@@ -31,14 +31,11 @@ public class Controller : NetworkBehaviour {
 	public override void OnStartLocalPlayer()
 	{
 
-		
+		Class c = gameObject.GetComponent<Class> (); 
 
-		gameObject.GetComponent<Class>().setClass(chooseClassNum());
+		c.setClass(chooseClassNum());
 
-		print ("called");
-		foreach(SkinnedMeshRenderer s in GetComponentsInChildren<SkinnedMeshRenderer>()){
-				s.material.color = Color.blue;
-		}
+
 		GameObject cam = Instantiate (camera);
 		Instantiate (gvrPrefab);
 
