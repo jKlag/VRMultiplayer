@@ -30,17 +30,25 @@ public class Controller : NetworkBehaviour {
 
 	public override void OnStartLocalPlayer()
 	{
+		
+		GameObject ca = GameObject.Find ("Camera");
+		if(ca != null){
+			print ("Deactiv");
+			Destroy(ca);
+
+		}
 
 		Class c = gameObject.GetComponent<Class> (); 
 
 		c.setClass(chooseClassNum());
-
-
-		GameObject cam = Instantiate (camera);
-		Instantiate (gvrPrefab);
-
-		cam.GetComponent<PlayerController> ().setPlayer (gameObject);
-
+//
+//
+//		GameObject cam = Instantiate (camera);
+//		GameObject gvr = Instantiate (gvrPrefab);
+//
+//
+		//gameObject.transform.Find("Main Camera").GetComponent<PlayerController> ().setPlayer (gameObject);
+//
 	}
 
 	public bool getIsLocalPlayer(){

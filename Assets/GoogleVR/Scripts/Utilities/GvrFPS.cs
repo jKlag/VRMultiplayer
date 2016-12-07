@@ -42,9 +42,8 @@ public class GvrFPS : MonoBehaviour {
   }
 
   void LateUpdate() {
-    float deltaTime = Time.unscaledDeltaTime;
-    float interp = deltaTime / (0.5f + deltaTime);
-    float currentFPS = 1.0f / deltaTime;
+    float interp = Time.deltaTime / (0.5f + Time.deltaTime);
+    float currentFPS = 1.0f / Time.deltaTime;
     fps = Mathf.Lerp(fps, currentFPS, interp);
     float msf = MS_PER_SEC / fps;
     textField.text = string.Format(DISPLAY_TEXT_FORMAT,

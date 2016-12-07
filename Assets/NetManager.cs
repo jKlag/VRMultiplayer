@@ -15,18 +15,21 @@ public class NetManager : NetworkManager {
 	public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId){
 		Vector3 playerSpawnPos;
 		GameObject playerPrefab;
-		print (conn.address);
 
-		if (conn.address == "localClient") {
-			playerPrefab = vivePlayer;
-			playerSpawnPos = vivePlayerSpawn;
-		}else{
+
+		if (UnityEngine.Application.platform == RuntimePlatform.Android || true) {
+			//remove camera. Viveplayer has own.
 			playerPrefab = cardboardPlayer;
 			playerSpawnPos = cardboardPlayerSpawn;
+
+
+		} else {
+			playerPrefab = vivePlayer;
+			playerSpawnPos = vivePlayerSpawn;
+
 		}
 
 		GameObject player = (GameObject)GameObject.Instantiate(playerPrefab, playerSpawnPos, Quaternion.identity);
-
 		NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
 	}
 

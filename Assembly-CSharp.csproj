@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\CameraCoord.cs" />
      <Compile Include="Assets\Controller.cs" />
      <Compile Include="Assets\GoogleVR\DemoScenes\ControllerDemo\ControllerDebugInfo.cs" />
      <Compile Include="Assets\GoogleVR\DemoScenes\ControllerDemo\ControllerDemoManager.cs" />
@@ -91,18 +92,34 @@
      <Compile Include="Assets\GoogleVR\Scripts\UI\IGvrGazeResponder.cs" />
      <Compile Include="Assets\GoogleVR\Scripts\Utilities\GvrFPS.cs" />
      <Compile Include="Assets\GoogleVR\Scripts\Utilities\GvrIntent.cs" />
+     <Compile Include="Assets\Lobby\Scripts\DraggablePanel.cs" />
+     <Compile Include="Assets\Lobby\Scripts\Lobby\LobbyCountdownPanel.cs" />
+     <Compile Include="Assets\Lobby\Scripts\Lobby\LobbyHook.cs" />
+     <Compile Include="Assets\Lobby\Scripts\Lobby\LobbyInfoPanel.cs" />
+     <Compile Include="Assets\Lobby\Scripts\Lobby\LobbyMainMenu.cs" />
+     <Compile Include="Assets\Lobby\Scripts\Lobby\LobbyManager.cs" />
+     <Compile Include="Assets\Lobby\Scripts\Lobby\LobbyPlayer.cs" />
+     <Compile Include="Assets\Lobby\Scripts\Lobby\LobbyPlayerList.cs" />
+     <Compile Include="Assets\Lobby\Scripts\Lobby\LobbyServerEntry.cs" />
+     <Compile Include="Assets\Lobby\Scripts\Lobby\LobbyServerList.cs" />
+     <Compile Include="Assets\Lobby\Scripts\Lobby\LobbyTopPanel.cs" />
+     <Compile Include="Assets\MakeMatch.cs" />
      <Compile Include="Assets\NetManager.cs" />
      <Compile Include="Assets\Network\NMHud.cs" />
      <Compile Include="Assets\Network\Spawner.cs" />
      <Compile Include="Assets\Players\Class.cs" />
      <Compile Include="Assets\Players\FollowPlayer.cs" />
      <Compile Include="Assets\Players\PlayerController.cs" />
+     <Compile Include="Assets\TurnPlayer.cs" />
      <Compile Include="Assets\UserControlModded.cs" />
      <Compile Include="Assets\ViveController.cs" />
      <None Include="Assets\GoogleVR\Distortion\GvrDistortion.cginc" />
+     <None Include="Assets\Lobby\Documentation.txt" />
      <None Include="Assets\GoogleVR\Legacy\Resources\UnlitTexture.shader" />
      <None Include="Assets\Dungeon Construction Kit\Prefabs\ReadMe.txt" />
+     <None Include="Assets\Lobby\Instruction.txt" />
      <None Include="Assets\Items\Staff\FantasyStaffReadme.txt" />
+     <None Include="Assets\Fonts\OpenSans\License!.txt" />
      <None Include="Assets\Plugins\Android\AndroidManifest-Daydream.xml" />
      <None Include="Assets\GoogleVR\Resources\UI\GvrReticleShader.shader" />
      <None Include="Assets\Dungeon Construction Kit\Scenes\ReadMe.txt" />

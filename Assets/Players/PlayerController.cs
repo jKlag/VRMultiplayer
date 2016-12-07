@@ -18,65 +18,63 @@ public class PlayerController : MonoBehaviour {
 
 	public float attackRate;
 	private float nextAttack;
-
+	
 	public float shoutRate;
 	private float nextShout;
+
+	private GameObject cam;
 
 	Animator animator;
 	NetworkAnimator netAnim;
 
 	private bool walking;
 
-	//public GameObject markerObject;
-	//GameObject marker;
-
-	public GameObject swordCursor;
-	public GameObject gvrCursor;
+	private Vector3 camPosition;
 
 	public GameObject keyIcon;
 	bool monsterDying = false;
 
-
-
-	//Sets the localplayer
-	public void setPlayer(GameObject localPlayer){
-		player = localPlayer;
+	void Start(){
+		player = gameObject;
 		netAnim = player.GetComponent<NetworkAnimator> ();
 		animator = player.GetComponent<Animator> ();
 		navMeshAgent = player.GetComponent<NavMeshAgent> ();
-		transform.position = player.transform.position + new Vector3(0,1.2f,0) + .3f*player.transform.forward;
-		float yRot = transform.rotation.eulerAngles.y;
-		player.transform.eulerAngles = new Vector3 (0, yRot, 0);
 
+		cam = GameObject.FindGameObjectWithTag ("MainCamera");
 	}
+
+
+
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 		//make sure player is lp. may not be nec
-		if (!player.GetComponent<Controller> ().getIsLocalPlayer ()) {
-			return;
-		}
+//		if (!player.GetComponent<Controller> ().getIsLocalPlayer ()) {
+//			return;
+//		}
+		//move camera to playerhead
+		camPosition = gameObject.transform.Find("camPlacer").transform.position;
+		cam.transform.position = camPosition;
 
-
+//		//turn player to camera
+//		if (navMeshAgent.velocity == Vector3.zero) {
+//			gameObject.transform.forward = cam.transform.forward;
+//		}
 		animator.SetFloat ("Forward", Vector3.Magnitude (navMeshAgent.velocity), 0.1f, Time.deltaTime);
 
-
-		float yRot = transform.rotation.eulerAngles.y;
-		//transform player position with camera position
-		player.transform.eulerAngles = new Vector3 (0, yRot, 0);
-		transform.position = player.transform.position + new Vector3 (0, 1.2f, 0) + .3f * player.transform.forward;
 
 
 		//on click
 		if (Input.GetButtonDown ("Fire1")) 
 		{
-			ray.origin = transform.position;
-			ray.direction = transform.forward;
+			ray.origin = cam.transform.position;
+			ray.direction = cam.transform.forward;
 
 			RaycastHit hit;
+			print (navMeshAgent.destination);
 
-
-			if (Physics.Raycast (ray, out hit, 50)) {
+			if (Physics.Raycast (ray, out hit, 100)) {
+				print (hit.collider.name);
 				if (hit.collider.gameObject.tag != "hittable") {
 					navMeshAgent.SetDestination (hit.point);
 					navMeshAgent.Resume ();
@@ -84,7 +82,7 @@ public class PlayerController : MonoBehaviour {
 					attack (hit);
 				}
 			} else {
-				netAnim.SetTrigger ("Attack");
+				animator.SetTrigger ("Attack");
 			}
 		}
 
