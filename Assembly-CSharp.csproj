@@ -99,6 +99,7 @@
      <Compile Include="Assets\Players\PlayerController.cs" />
      <Compile Include="Assets\UserControlModded.cs" />
      <Compile Include="Assets\ViveController.cs" />
+     <Compile Include="Assets\VivePlayer.cs" />
      <None Include="Assets\GoogleVR\Distortion\GvrDistortion.cginc" />
      <None Include="Assets\GoogleVR\Legacy\Resources\UnlitTexture.shader" />
      <None Include="Assets\Dungeon Construction Kit\Prefabs\ReadMe.txt" />
