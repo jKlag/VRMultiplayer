@@ -3,48 +3,32 @@ using System.Collections;
 using UnityEngine.Networking;
 
 public class Controller : NetworkBehaviour {
-
-	public GameObject camera;
-	public GameObject gvrPrefab;
-
-	//chooses the class of the player incrementally. Allows for players to drop out and be readded.
-	int chooseClassNum(){
-		GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
-		bool unique = false;
-		int num = 1;
-		while (!unique) {
-			int newNum = num;
-			foreach(GameObject p in players){
-				if (num == p.GetComponent<Class> ().getClassNum ()) {
-					num++;
-				}
-			}
-			if (newNum == num) {
-				unique = true;
-			}
-		}
-		print (num);
-		return num;
-	}
-		
+	public int classNum = 1;
 
 	public override void OnStartLocalPlayer()
 	{
-
-		Class c = gameObject.GetComponent<Class> (); 
-
-		c.setClass(chooseClassNum());
-
-
-		GameObject cam = Instantiate (camera);
-		Instantiate (gvrPrefab);
-
+		CmdGetClass ();
+		GameObject cam = GameObject.FindGameObjectWithTag ("MainCamera");
 		cam.GetComponent<PlayerController> ().setPlayer (gameObject);
+		print (classNum);
+	}
 
+	public void setClassNum(int x){
+		classNum = x;
+	}
+
+	public int getClassNum(){
+		return classNum;
 	}
 
 	public bool getIsLocalPlayer(){
 		return isLocalPlayer;
+	}
+
+
+	[Command]
+	void CmdGetClass(){
+		gameObject.GetComponent<Controller> ().setClassNum (NetworkServer.connections.Count);
 	}
 
 }

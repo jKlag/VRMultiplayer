@@ -10,26 +10,31 @@ namespace UnityEngine.Networking
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public class NMHud : MonoBehaviour
 	{
-		public NetworkManager manager;
 		[SerializeField] public bool showGUI = true;
 		[SerializeField] public int offsetX;
 		[SerializeField] public int offsetY;
 
 		// Runtime variable
 		bool m_ShowServer;
+		private NetworkManager manager;
 		string address;
 		public GUIStyle style;
+		public GameObject androidCam;
+		public GameObject gvrPrefab;
 
-		void Awake()
-		{
-			manager = GetComponent<NetworkManager>();
+
+
+		void Start(){
+			manager = gameObject.GetComponent<NetworkManager> ();
+			//DEBUG: remove true
+			if (UnityEngine.Application.platform == RuntimePlatform.Android || true) {
+				Instantiate (androidCam);
+				Instantiate (gvrPrefab);
+			}
 		}
 
 		void Update()
 		{
-			if (!showGUI)
-				return;
-
 			if (!manager.IsClientConnected() && !NetworkServer.active && manager.matchMaker == null)
 			{
 				if (UnityEngine.Application.platform != RuntimePlatform.Android)
@@ -39,14 +44,11 @@ namespace UnityEngine.Networking
 					{
 						manager.StartHost();
 						address = NetworkManager.singleton.networkAddress;
-						print (address);
-						//showGUI = false;
 					}
 				}
 				//DEBUG: Remove
 				if (Input.GetKeyDown(KeyCode.C))
 				{
-					print (manager.networkAddress);
 					manager.StartClient();
 				}
 				//End remove
@@ -62,8 +64,9 @@ namespace UnityEngine.Networking
 
 		void OnGUI()
 		{
+			//DEBUG: remove true
 			//either on android or vive
-			if (UnityEngine.Application.platform == RuntimePlatform.Android) {
+			if (UnityEngine.Application.platform == RuntimePlatform.Android || true) {
 				showAndroid ();
 			} else {
 				//showAndroid ();

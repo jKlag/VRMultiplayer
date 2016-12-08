@@ -49,10 +49,21 @@ public class PlayerController : MonoBehaviour {
 		player.transform.eulerAngles = new Vector3 (0, yRot, 0);
 
 	}
+
+	void LateUpdate(){
+		float yRot = transform.rotation.eulerAngles.y;
+		if (player) {
+			player.transform.eulerAngles = new Vector3 (0, yRot, 0);
+			transform.position = player.transform.position + new Vector3 (0, 1.2f, 0) + .3f * player.transform.forward;
+		}
+	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 		//make sure player is lp. may not be nec
+		if (!player) {
+			return;
+		}
 		if (!player.GetComponent<Controller> ().getIsLocalPlayer ()) {
 			return;
 		}
@@ -61,10 +72,7 @@ public class PlayerController : MonoBehaviour {
 		animator.SetFloat ("Forward", Vector3.Magnitude (navMeshAgent.velocity), 0.1f, Time.deltaTime);
 
 
-		float yRot = transform.rotation.eulerAngles.y;
 		//transform player position with camera position
-		player.transform.eulerAngles = new Vector3 (0, yRot, 0);
-		transform.position = player.transform.position + new Vector3 (0, 1.2f, 0) + .3f * player.transform.forward;
 
 
 		//on click
