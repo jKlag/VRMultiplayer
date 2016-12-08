@@ -19,17 +19,21 @@ namespace UnityEngine.Networking
 		private NetworkManager manager;
 		string address;
 		public GUIStyle style;
+		public GameObject viveCam;
 		public GameObject androidCam;
 		public GameObject gvrPrefab;
-
+		public string ipAddress;
 
 
 		void Start(){
 			manager = gameObject.GetComponent<NetworkManager> ();
 			//DEBUG: remove true
-			if (UnityEngine.Application.platform == RuntimePlatform.Android || true) {
+			if (!GameObject.Find ("VivePlayerInfo").GetComponent<VivePlayer> ().isVivePlayer) {
 				Instantiate (androidCam);
-				Instantiate (gvrPrefab);
+				GameObject gvr = Instantiate (gvrPrefab);
+				gvr.GetComponent<GvrViewer> ().VRModeEnabled = true;
+			} else {
+				Instantiate (viveCam);
 			}
 		}
 
@@ -37,19 +41,16 @@ namespace UnityEngine.Networking
 		{
 			if (!manager.IsClientConnected() && !NetworkServer.active && manager.matchMaker == null)
 			{
-				if (UnityEngine.Application.platform != RuntimePlatform.Android)
-				{
-
-					if (Input.GetKeyDown(KeyCode.H))
-					{
-						manager.StartHost();
+				if (GameObject.Find ("VivePlayerInfo").GetComponent<VivePlayer> ().isVivePlayer) {
+					if (Input.GetKeyDown (KeyCode.H)) {
+						manager.StartHost ();
 						address = NetworkManager.singleton.networkAddress;
 					}
-				}
-				//DEBUG: Remove
-				if (Input.GetKeyDown(KeyCode.C))
-				{
-					manager.StartClient();
+				} else {
+					//DEBUG: Remove
+					if (Input.GetButtonDown ("Fire1")) {
+						manager.StartClient ();
+					}
 				}
 				//End remove
 			}
@@ -66,7 +67,7 @@ namespace UnityEngine.Networking
 		{
 			//DEBUG: remove true
 			//either on android or vive
-			if (UnityEngine.Application.platform == RuntimePlatform.Android || true) {
+			if (!GameObject.Find ("VivePlayerInfo").GetComponent<VivePlayer> ().isVivePlayer) {
 				showAndroid ();
 			} else {
 				//showAndroid ();
@@ -80,10 +81,7 @@ namespace UnityEngine.Networking
 		void showAndroid(){
 			//before connection
 			if (!manager.IsClientConnected ()) {
-				if (GUI.Button (new Rect (Screen.width / 2 - 100, Screen.height / 2 + 10, 200, 50), "Connect To Host")) {
-					manager.StartClient ();
-				}
-				manager.networkAddress = GUI.TextField (new Rect (Screen.width / 2 - 100, Screen.height / 2 + 70, 200, 30), manager.networkAddress);
+				manager.networkAddress = GUI.TextField (new Rect (Screen.width / 2 - 100, Screen.height / 2 + 70, 200, 30), ipAddress);
 			}
 		}
 

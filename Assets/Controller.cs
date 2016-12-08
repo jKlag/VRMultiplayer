@@ -15,7 +15,6 @@ public class Controller : NetworkBehaviour {
 			Destroy (gameObject);
 			GameObject x = Instantiate (vivePlayer);
 			CmdReplaceMe (x);
-
 			Destroy(GameObject.FindGameObjectWithTag ("MainCamera"));
 			Destroy(GameObject.FindGameObjectWithTag ("GvrViewer"));
 

@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour {
 
 	GameObject player;
 
-	private NavMeshAgent navMeshAgent;
+	private UnityEngine.AI.NavMeshAgent navMeshAgent;
 
 	private Ray ray;
 
@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour {
 		player = localPlayer;
 		netAnim = player.GetComponent<NetworkAnimator> ();
 		animator = player.GetComponent<Animator> ();
-		navMeshAgent = player.GetComponent<NavMeshAgent> ();
+		navMeshAgent = player.GetComponent<UnityEngine.AI.NavMeshAgent> ();
 		transform.position = player.transform.position + new Vector3(0,1.2f,0) + .3f*player.transform.forward;
 		float yRot = transform.rotation.eulerAngles.y;
 		player.transform.eulerAngles = new Vector3 (0, yRot, 0);
@@ -61,15 +61,12 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		//make sure player is lp. may not be nec
-		if (!player) {
-			return;
-		}
-		if (!player.GetComponent<Controller> ().getIsLocalPlayer ()) {
+		if (!player || !player.GetComponent<Controller> ().getIsLocalPlayer ()) {
 			return;
 		}
 
 
-		animator.SetFloat ("Forward", Vector3.Magnitude (navMeshAgent.velocity), 0.1f, Time.deltaTime);
+		//animator.SetFloat ("Forward", Vector3.Magnitude (navMeshAgent.velocity), 0.1f, Time.deltaTime);
 
 
 		//transform player position with camera position

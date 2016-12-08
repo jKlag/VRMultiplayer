@@ -11,18 +11,19 @@ public class NetManager : NetworkManager {
 
 
 	public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId){
-		Vector3 playerSpawnPos;
-		GameObject playerPrefab;
+		if (GameObject.Find ("VivePlayerInfo").GetComponent<VivePlayer> ().isVivePlayer) {
+			
+			Vector3 playerSpawnPos;
+			GameObject playerPrefab;
 
-		playerPrefab = vivePlayer;
-		playerSpawnPos = vivePlayerSpawn;
-		Destroy (GameObject.FindGameObjectWithTag("MainCamera"));
-		Destroy (GameObject.FindGameObjectWithTag ("GvrViewer"));
-		Destroy (GameObject.Find ("EventSystem"));
+			playerPrefab = vivePlayer;
+			playerSpawnPos = vivePlayerSpawn;
+			Destroy (GameObject.FindGameObjectWithTag ("MainCamera"));
 
 
-		GameObject player = (GameObject)GameObject.Instantiate(playerPrefab, playerSpawnPos, Quaternion.identity);
-		NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
+			GameObject player = (GameObject)GameObject.Instantiate (playerPrefab, playerSpawnPos, Quaternion.identity);
+			NetworkServer.AddPlayerForConnection (conn, player, playerControllerId);
+		}
 	}
 
 }
