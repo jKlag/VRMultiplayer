@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour {
 
 	public GameObject keyIcon;
 	bool monsterDying = false;
-
+	public float attackDistance;
 
 
 	//Sets the localplayer
@@ -64,61 +64,81 @@ public class PlayerController : MonoBehaviour {
 		if (!player || !player.GetComponent<Controller> ().getIsLocalPlayer ()) {
 			return;
 		}
+			
 
-
-		//animator.SetFloat ("Forward", Vector3.Magnitude (navMeshAgent.velocity), 0.1f, Time.deltaTime);
-
-
-		//transform player position with camera position
-
-
-		//on click
 		if (Input.GetButtonDown ("Fire1")) 
 		{
 			ray.origin = transform.position;
 			ray.direction = transform.forward;
-
 			RaycastHit hit;
 
-
-			if (Physics.Raycast (ray, out hit, 50)) {
-				if (hit.collider.gameObject.tag != "hittable") {
-					navMeshAgent.SetDestination (hit.point);
-					navMeshAgent.Resume ();
-				} else {
-					attack (hit);
+			if (Physics.Raycast(ray, out hit,50))
+			{
+				Debug.Log (hit.collider.gameObject.tag);
+				if (hit.collider.gameObject.tag == "Monster" && Time.time > nextAttack &&
+					player.GetComponent<Controller>().getClassNum() == 0) {
+					//play animation
+					netAnim.SetTrigger("Attack");
+					nextAttack = Time.time + attackRate;
+					if (Vector3.Distance (transform.position, hit.point) < attackDistance) {
+						NetworkInstanceId monsterID = hit.collider.gameObject.GetComponent<NetworkIdentity> ().netId;
+						player.GetComponent<DestroyObject> ().Cmd_DestroyThis (monsterID);
+					}
+				} 
+				else if (hit.collider.gameObject.tag == "Brick" && Time.time > nextAttack &&
+					player.GetComponent<Controller>().getClassNum() == 1) {
+					//play animation
+					netAnim.SetTrigger("Attack");
+					nextAttack = Time.time + attackRate;
+					if (Vector3.Distance (transform.position, hit.point) < attackDistance) {
+						NetworkInstanceId brickID = hit.collider.gameObject.GetComponent<NetworkIdentity> ().netId;
+						player.GetComponent<DestroyObject> ().Cmd_DestroyThis (brickID);
+					}
 				}
-			} else {
-				netAnim.SetTrigger ("Attack");
+				else if (hit.collider.gameObject.tag == "Spikes" && Time.time > nextAttack &&
+					player.GetComponent<Controller>().getClassNum() == 2) {
+					//play animation
+					netAnim.SetTrigger("Attack");
+					nextAttack = Time.time + attackRate;
+					if (Vector3.Distance (transform.position, hit.point) < attackDistance) {
+						NetworkInstanceId trapID = hit.collider.gameObject.GetComponent<NetworkIdentity> ().netId;
+						player.GetComponent<DestroyObject> ().Cmd_DestroyThis (trapID);
+					}
+				}
+				else {
+					walking = true;
+					navMeshAgent.destination = hit.point;
+					navMeshAgent.Resume ();
+				}
 			}
 		}
-
-
 	
 		
 	}
 
-	//plays attack animation and calls attack method in class
-	void attack(RaycastHit hit){
-		netAnim.SetTrigger ("Attack");
-		nextAttack = Time.time + attackRate;
-		player.GetComponent<Class> ().attack (hit);
+
+	public void getKey(){
+		hasKey = true;
 	}
 
-	void OnTriggerEnter(Collider col){
-		if (col.gameObject.tag == "key") {
-			hasKey = true;
-			Destroy (col.gameObject);
-			keyIcon.transform.localScale = new Vector3 (.2f, .2f, .2f);
-		}
-		if (col.gameObject.tag == "fakekey") {
-			if (mClass != PClass.magnifier) {
-				hasKey = true;
-				keyIcon.transform.localScale = new Vector3 (.2f, .2f, .2f);
-			} 
-			Destroy (col.gameObject);
-		}
+	public bool getHasKey(){
+		return hasKey;
 	}
+
+	public void gotoPoint(Vector3 x){
+		navMeshAgent.enabled = false;
+		player.transform.position = x;
+		navMeshAgent.enabled = true;
+
+		navMeshAgent.Stop ();
+	}
+
+	public void goToSpawn(){
+		print ("Going to spawnpoint");
+		// return to original spawnpoint
+		gotoPoint(new Vector3(0,2,0));
+	}
+
 		
 
 }

@@ -4,9 +4,11 @@ using UnityEngine.Networking;
 
 public class Controller : NetworkBehaviour {
 	public GameObject vivePlayer;
+	public Vector3[] spawnPoints;
+	public GameObject[] classItems;
 
 	[SyncVar]
-	public int classNum;
+	public int classNum = -1;
 
 	public override void OnStartLocalPlayer()
 	{
@@ -20,12 +22,28 @@ public class Controller : NetworkBehaviour {
 
 
 		} else {
-			CmdGetClass ();
-			print (getClassNum());
+			setClass ();
+			movePlayer ();
 			GameObject cam = GameObject.FindGameObjectWithTag ("MainCamera");
 			cam.GetComponent<PlayerController> ().setPlayer (gameObject);
 		}
 		
+	}
+
+		
+	void setClass(){
+		classNum = GameObject.FindGameObjectsWithTag ("Player").Length;
+	}
+
+	public void movePlayer(){
+		Vector3 spawn;
+		if (classNum >= 0 && classNum < spawnPoints.Length) {
+			spawn = spawnPoints [classNum];
+
+		} else {
+			spawn = new Vector3(0,2,0);
+		}
+		GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PlayerController> ().gotoPoint (spawn);
 	}
 
 	public void setClassNum(int x){
@@ -40,14 +58,6 @@ public class Controller : NetworkBehaviour {
 		return isLocalPlayer;
 	}
 
-
-	[Command]
-	void CmdGetClass(){
-		foreach (NetworkConnection c in NetworkServer.connections) {
-			print (c.ToString());
-		}
-		gameObject.GetComponent<Controller> ().setClassNum (NetworkServer.connections.Count);
-	}
 
 
 
