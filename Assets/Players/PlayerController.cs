@@ -1,16 +1,15 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
 	GameObject player;
-
+	private GameObject keyIndicator;
 	private UnityEngine.AI.NavMeshAgent navMeshAgent;
 
 	private Ray ray;
-
-	bool hasKey = false;
 
 	enum PClass {hammer,sword,magnifier};
 
@@ -37,14 +36,15 @@ public class PlayerController : MonoBehaviour {
 	bool monsterDying = false;
 	public float attackDistance;
 
-
 	//Sets the localplayer
 	public void setPlayer(GameObject localPlayer){
+		keyIndicator = GameObject.Find ("KeyIndicator");
+		keyIndicator.SetActive (false);
 		player = localPlayer;
 		netAnim = player.GetComponent<NetworkAnimator> ();
 		animator = player.GetComponent<Animator> ();
 		navMeshAgent = player.GetComponent<UnityEngine.AI.NavMeshAgent> ();
-		transform.position = player.transform.position + new Vector3(0,2.8f,0) + .3f*player.transform.forward;
+		transform.position = player.transform.position + new Vector3(0,2.4f,0) + .3f*player.transform.forward;
 		float yRot = transform.rotation.eulerAngles.y;
 		player.transform.eulerAngles = new Vector3 (0, yRot, 0);
 
@@ -54,22 +54,27 @@ public class PlayerController : MonoBehaviour {
 		float yRot = transform.rotation.eulerAngles.y;
 		if (player) {
 			player.transform.eulerAngles = new Vector3 (0, yRot, 0);
-			transform.position = player.transform.position + new Vector3 (0, 2.8f, 0) + .3f * player.transform.forward;
+			transform.position = player.transform.position + new Vector3 (0, 2.4f, 0) + .3f * player.transform.forward;
 		}
 	}
-	
+		
 	// Update is called once per frame
 	void FixedUpdate () {
-		animator.SetFloat("Forward", Vector3.Magnitude(navMeshAgent.velocity), 0.1f, Time.deltaTime);
+
 
 		//make sure player is lp. may not be nec
 		if (!player || !player.GetComponent<Controller> ().getIsLocalPlayer ()) {
 			return;
 		}
-			
+		animator.SetFloat("Forward", Vector3.Magnitude(navMeshAgent.velocity), 0.1f, Time.deltaTime);
+
 
 		if (Input.GetButtonDown ("Fire1")) 
 		{
+			//can player move?
+			if (!player.GetComponent<Controller>().move) {
+				return;
+			}
 			ray.origin = transform.position;
 			ray.direction = transform.forward;
 			RaycastHit hit;
@@ -110,6 +115,7 @@ public class PlayerController : MonoBehaviour {
 						player.GetComponent<DestroyObject> ().Cmd_DestroyThis (trapID);
 					}
 				}
+
 				else {
 					walking = true;
 					navMeshAgent.destination = hit.point;
@@ -121,13 +127,12 @@ public class PlayerController : MonoBehaviour {
 		
 	}
 
+	public void getKey(GameObject key){
+		NetworkInstanceId keyID = key.GetComponent<NetworkIdentity> ().netId;
+		player.GetComponent<DestroyObject> ().Cmd_DestroyThis (keyID);
+		player.GetComponent<Controller>().hasKey = true;
+		keyIndicator.SetActive (true);
 
-	public void getKey(){
-		hasKey = true;
-	}
-
-	public bool getHasKey(){
-		return hasKey;
 	}
 
 	public void gotoPoint(Vector3 x){
@@ -139,9 +144,8 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void goToSpawn(){
-		print ("Going to spawnpoint");
 		// return to original spawnpoint
-		gotoPoint(new Vector3(0,2,0));
+		gotoPoint(player.GetComponent<Controller>().spawnPoints[player.GetComponent<Controller>().getClassNum()]);
 	}
 
 		

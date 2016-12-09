@@ -8,15 +8,17 @@ public class spawnrando : NetworkBehaviour {
 	public GameObject spawnobj;
 	public Vector3 pos;
 
-	void Start(){
-		GameObject inst = Instantiate (spawnobj);
-		inst.transform.position = pos;
+	private bool spawned = false;
 
-		NetworkServer.Spawn (inst);
-	}
 		
 	// Update is called once per frame
 	void Update () {
-		
+		//not NetworkServer.connections.Count counts number of connections including localClient
+		if (!spawned && NetworkServer.connections.Count > 1) {
+			spawned = true;
+			GameObject inst = Instantiate (spawnobj);
+			inst.transform.position = pos;
+			NetworkServer.Spawn (inst);
+		}
 	}
 }

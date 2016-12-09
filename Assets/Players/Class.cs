@@ -7,9 +7,9 @@ public class Class : NetworkBehaviour {
 
 	private string playerClass;
 
-	Color warriorColor = Color.blue;
-	Color detectiveColor = Color.yellow;
-	Color destroyerColor = Color.red;
+//	Color warriorColor = Color.blue;
+//	Color detectiveColor = Color.yellow;
+//	Color destroyerColor = Color.red;
 	int classNumber;
 
 	private GameObject item;
