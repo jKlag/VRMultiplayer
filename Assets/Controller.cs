@@ -6,8 +6,9 @@ public class Controller : NetworkBehaviour {
 	public GameObject vivePlayer;
 	public Vector3[] spawnPoints;
 	public GameObject[] classItems;
+	public GameObject itemSpawnPlace;
 
-	[SyncVar]
+
 	public int classNum = -1;
 
 	public override void OnStartLocalPlayer()
@@ -22,17 +23,26 @@ public class Controller : NetworkBehaviour {
 
 
 		} else {
-			setClass ();
-			movePlayer ();
 			GameObject cam = GameObject.FindGameObjectWithTag ("MainCamera");
 			cam.GetComponent<PlayerController> ().setPlayer (gameObject);
+			setClass ();
+			setWeapon ();
+			movePlayer ();
 		}
 		
 	}
 
+
 		
 	void setClass(){
 		classNum = GameObject.FindGameObjectsWithTag ("Player").Length;
+	}
+
+	void setWeapon(){
+		GameObject weapon = Instantiate (classItems [classNum]);
+		weapon.transform.parent = itemSpawnPlace.transform;
+		weapon.transform.rotation = itemSpawnPlace.transform.rotation;
+		weapon.transform.position = itemSpawnPlace.transform.position;
 	}
 
 	public void movePlayer(){

@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour {
 		netAnim = player.GetComponent<NetworkAnimator> ();
 		animator = player.GetComponent<Animator> ();
 		navMeshAgent = player.GetComponent<UnityEngine.AI.NavMeshAgent> ();
-		transform.position = player.transform.position + new Vector3(0,1.2f,0) + .3f*player.transform.forward;
+		transform.position = player.transform.position + new Vector3(0,2.8f,0) + .3f*player.transform.forward;
 		float yRot = transform.rotation.eulerAngles.y;
 		player.transform.eulerAngles = new Vector3 (0, yRot, 0);
 
@@ -54,12 +54,14 @@ public class PlayerController : MonoBehaviour {
 		float yRot = transform.rotation.eulerAngles.y;
 		if (player) {
 			player.transform.eulerAngles = new Vector3 (0, yRot, 0);
-			transform.position = player.transform.position + new Vector3 (0, 1.2f, 0) + .3f * player.transform.forward;
+			transform.position = player.transform.position + new Vector3 (0, 2.8f, 0) + .3f * player.transform.forward;
 		}
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		animator.SetFloat("Forward", Vector3.Magnitude(navMeshAgent.velocity), 0.1f, Time.deltaTime);
+
 		//make sure player is lp. may not be nec
 		if (!player || !player.GetComponent<Controller> ().getIsLocalPlayer ()) {
 			return;
@@ -77,10 +79,13 @@ public class PlayerController : MonoBehaviour {
 				Debug.Log (hit.collider.gameObject.tag);
 				if (hit.collider.gameObject.tag == "Monster" && Time.time > nextAttack &&
 					player.GetComponent<Controller>().getClassNum() == 0) {
+					print ("attacking");
 					//play animation
 					netAnim.SetTrigger("Attack");
 					nextAttack = Time.time + attackRate;
 					if (Vector3.Distance (transform.position, hit.point) < attackDistance) {
+						print("Kill");
+
 						NetworkInstanceId monsterID = hit.collider.gameObject.GetComponent<NetworkIdentity> ().netId;
 						player.GetComponent<DestroyObject> ().Cmd_DestroyThis (monsterID);
 					}
