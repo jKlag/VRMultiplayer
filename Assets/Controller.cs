@@ -13,6 +13,7 @@ public class Controller : NetworkBehaviour {
 
 	public override void OnStartLocalPlayer()
 	{
+
 		if (GameObject.Find("VivePlayerInfo").GetComponent<VivePlayer>().isVivePlayer) {
 			//vive
 			Destroy (gameObject);
@@ -23,6 +24,9 @@ public class Controller : NetworkBehaviour {
 
 
 		} else {
+			UnityEngine.AI.NavMeshAgent agent = gameObject.AddComponent<UnityEngine.AI.NavMeshAgent> ();
+			agent.radius = .2f;
+			agent.speed = 5f;
 			GameObject cam = GameObject.FindGameObjectWithTag ("MainCamera");
 			cam.GetComponent<PlayerController> ().setPlayer (gameObject);
 			setClass ();
@@ -35,7 +39,7 @@ public class Controller : NetworkBehaviour {
 
 		
 	void setClass(){
-		classNum = GameObject.FindGameObjectsWithTag ("Player").Length;
+		classNum = GameObject.FindGameObjectsWithTag ("Player").Length - 1;
 	}
 
 	void setWeapon(){
@@ -43,6 +47,12 @@ public class Controller : NetworkBehaviour {
 		weapon.transform.parent = itemSpawnPlace.transform;
 		weapon.transform.rotation = itemSpawnPlace.transform.rotation;
 		weapon.transform.position = itemSpawnPlace.transform.position;
+	}
+
+
+	[Command]
+	void CmdSpawnWep(GameObject weapon){
+		NetworkServer.Spawn (weapon);
 	}
 
 	public void movePlayer(){
