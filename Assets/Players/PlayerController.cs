@@ -71,10 +71,6 @@ public class PlayerController : MonoBehaviour {
 
 		if (Input.GetButtonDown ("Fire1")) 
 		{
-			//can player move?
-			if (!player.GetComponent<Controller>().move) {
-				return;
-			}
 			ray.origin = transform.position;
 			ray.direction = transform.forward;
 			RaycastHit hit;

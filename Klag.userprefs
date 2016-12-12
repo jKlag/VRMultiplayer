@@ -1,11 +1,18 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Controller.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Players/PlayerCollisions.cs">
     <Files>
-      <File FileName="Assets/Network/NMHud.cs" Line="52" Column="28" />
-      <File FileName="Assets/Players/PlayerController.cs" Line="86" Column="1" />
-      <File FileName="Assets/Controller.cs" Line="10" Column="37" />
-      <File FileName="Assets/NetManager.cs" Line="32" Column="1" />
+      <File FileName="Assets/Timer.cs" Line="40" Column="55" />
+      <File FileName="Assets/Network/NMHud.cs" Line="69" Column="20" />
+      <File FileName="Assets/Players/PlayerController.cs" Line="42" Column="1" />
+      <File FileName="Assets/Controller.cs" Line="14" Column="29" />
+      <File FileName="Assets/NetManager.cs" Line="26" Column="4" />
+      <File FileName="Assets/Players/DestroyObject.cs" Line="17" Column="11" />
+      <File FileName="Assets/Map Items/stone_door/DoorOpener.cs" Line="16" Column="22" />
+      <File FileName="Assets/Players/Class.cs" Line="10" Column="3" />
+      <File FileName="Assets/Obstacles/EnemyController.cs" Line="76" Column="39" />
+      <File FileName="Assets/WinScript.cs" Line="25" Column="1" />
+      <File FileName="Assets/Players/PlayerCollisions.cs" Line="16" Column="63" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

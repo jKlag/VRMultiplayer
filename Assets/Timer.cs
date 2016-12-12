@@ -64,16 +64,11 @@ public class Timer : NetworkBehaviour {
 					}
 				}
 			}
-			if (serverTimer.playersCanMove){
-				gameObject.GetComponent<Controller> ().move = true;
-			}
-
+		
 			if (GameObject.Find ("Win").GetComponent<WinScript> ().playersWin) {
 				GameObject.Find ("Timer").GetComponent<Text> ().text = "You Win!";
-				gameObject.GetComponent<Controller>().move = false;
 			}else if (timer == -2 && !GameObject.Find("Win").GetComponent<WinScript>().playersWin) {
 				GameObject.Find ("Timer").GetComponent<Text> ().text = "You Lose!";
-				gameObject.GetComponent<Controller>().move = false;
 			}else if (gameObject.tag == "Player") {
 				GameObject.Find ("Timer").GetComponent<Text> ().text = 	((float)(Math.Round((double)(gameTime - timer), 2))).ToString ();
 			}

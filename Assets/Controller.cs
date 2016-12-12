@@ -10,7 +10,6 @@ public class Controller : NetworkBehaviour {
 	public GameObject[] classItems;
 	public GameObject itemSpawnPlace;
 
-	public bool move = false; 
 	public bool hasKey = false;
 	public int classNum = -1;
 

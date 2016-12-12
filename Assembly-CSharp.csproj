@@ -104,6 +104,7 @@
      <Compile Include="Assets\Players\FollowPlayer.cs" />
      <Compile Include="Assets\Players\PlayerCollisions.cs" />
      <Compile Include="Assets\Players\PlayerController.cs" />
+     <Compile Include="Assets\Players\PlayerTime.cs" />
      <Compile Include="Assets\Timer.cs" />
      <Compile Include="Assets\UserControlModded.cs" />
      <Compile Include="Assets\ViveController.cs" />
