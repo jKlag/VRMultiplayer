@@ -14,7 +14,7 @@ public class spawnrando : NetworkBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//not NetworkServer.connections.Count counts number of connections including localClient
-		if (!spawned && NetworkServer.connections.Count > 1) {
+		if (!spawned && NetworkServer.connections.Count > 0) {
 			spawned = true;
 			GameObject inst = Instantiate (spawnobj);
 			inst.transform.position = pos;

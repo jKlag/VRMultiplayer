@@ -64,7 +64,7 @@ public class Timer : NetworkBehaviour {
 					}
 				}
 			}
-			if (serverTimer.playersCanMove){
+			if (!masterTimer && serverTimer.playersCanMove){
 				gameObject.GetComponent<Controller> ().move = true;
 			}
 

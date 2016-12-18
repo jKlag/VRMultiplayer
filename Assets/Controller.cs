@@ -23,7 +23,7 @@ public class Controller : NetworkBehaviour {
 			//vive
 			Destroy (gameObject);
 			GameObject x = Instantiate (vivePlayer);
-			CmdReplaceMe (x);
+			//CmdReplaceMe (x);
 			Destroy(GameObject.FindGameObjectWithTag ("MainCamera"));
 			Destroy(GameObject.FindGameObjectWithTag ("GvrViewer"));
 
