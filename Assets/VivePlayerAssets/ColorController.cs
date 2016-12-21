@@ -1,25 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VRTK;
 
-namespace VRTK {
-    public class ColorController : MonoBehaviour {
+public class ColorController : MonoBehaviour {
 
-        public GameObject master;
+    public GameObject master;
 
-        private ItemPlaceholder masterScript;
-        private Renderer rend;
+    private ItemPlaceholder masterScript;
+    private Renderer rend;
 
-        // Use this for initialization
-        void Start() {
-            masterScript = master.GetComponent<ItemPlaceholder>();
-            rend = GetComponent<Renderer>();
-            rend.material.color = masterScript.highlightedColor.color;
-        }
+    // Use this for initialization
+    void Start() {
+        masterScript = master.GetComponent<ItemPlaceholder>();
+        rend = GetComponent<Renderer>();
+        rend.material.color = masterScript.highlightedColor.color;
+    }
 
-        // Update is called once per frame
-        void Update() {
-            rend.enabled = masterScript.highlighted;
-        }
+    // Update is called once per frame
+    void Update() {
+        rend.enabled = masterScript.highlighted;
     }
 }
